@@ -1,15 +1,20 @@
 package com.green.book_shop.test;
 
 import com.green.book_shop.book.dto.BookDTO;
+import com.green.book_shop.util.UploadUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/test")
 public class TestController {
+  private final UploadUtil uploadUtil;
 
   @GetMapping("/1")
   public int test1() {
@@ -25,26 +30,16 @@ public class TestController {
   //첨부파일 데이터를 받을 때는 MultiPartFile 객체를 사용한다.
   //첨부파일 연습1
   @PostMapping("/upload1")
-  public void upload1(BookDTO bookDTO, @RequestParam("firstFile") MultipartFile file){
-    System.out.println(bookDTO);
-    System.out.println("첨부된 원본 파일명 : " + file.getOriginalFilename());
-
-    //업로드될 경로
-    String uploadPath = "D:\\01-STUDY\\devel\\ShopProject\\backEnd\\book_shop\\src\\main\\resources\\upload\\";
-
-    //첨부한 원본 파일명
-    String attachedFileName = file.getOriginalFilename();
-
-    //업로드 경로, 파일명을 연결
-    File f = new File(uploadPath + attachedFileName);
-
-    //파일 첨부하는 실제 코드
-    try {
-      file.transferTo(f);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-
-
+  public void upload1(BookDTO bookDTO, @RequestParam(name = "firstFile", required = false) MultipartFile file){
+    //단일 첨부 파일 업로드
+    uploadUtil.fileUpload(file);
   }
+
+  //첨부할 파일에 여러개 들어오면 MultipartFile[] 형태로 데이터를 받음
+  @PostMapping("/upload2")
+  public void upload2(@RequestParam(name = "files", required = false) MultipartFile[] files){
+    //다중 파일 업로드
+    uploadUtil.multiFileUpload(files);
+  }
+
 }
