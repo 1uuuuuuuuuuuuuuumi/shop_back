@@ -17,30 +17,34 @@ public class UploadUtil {
   private String uploadPath;
 
   //단일 파일 업로드
-  public void fileUpload(MultipartFile file){
+  public String fileUpload(MultipartFile file){
 
-    //파일을 첨부하지 않았으면...
-    if(file == null){
-      return;
-    }
+    //파일을 첨부하면 실행
 
-    //화면에서 선택한 원본 파일명
-    String originFileName = file.getOriginalFilename();
+    if(file != null){
+      //첨부기능 실행
+      //화면에서 선택한 원본 파일명
+      String originFileName = file.getOriginalFilename();
 
-    //첨부할 파일명
-    String attachFileName = getAttachedFileName(originFileName);
+      //첨부할 파일명
+      String attachFileName = getAttachedFileName(originFileName);
 
-    //업로드 경로, 파일명을 연결 -> ex> D://devel/abc.jpg
-    File f = new File(uploadPath + attachFileName);
+      //업로드 경로, 파일명을 연결 -> ex> D://devel/abc.jpg
+      File f = new File(uploadPath + attachFileName);
 
-    //파일 첨부하는 실제 코드
-    //첨부한 파일(file)을 실제 업로드할 경로(f)로 옮긴다
-    try {
-      file.transferTo(f);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
+      //파일 첨부하는 실제 코드
+      //첨부한 파일(file)을 실제 업로드할 경로(f)로 옮긴다
+      try {
+        file.transferTo(f);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+      return attachFileName;
+      }
+    return null;
+    } //첨부한 파일명을 리턴하고 싶음 attachFileName 이거 !
+
+
 
   //다중 파일 업로드
   public void multiFileUpload(MultipartFile[] files){

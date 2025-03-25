@@ -43,5 +43,15 @@ public class BookServiceImpl implements BookService {
     return result;
   }
 
+  @Override
+  public void insertImgs(BookDTO bookDTO) {
+    bookMapper.insertImgs(bookDTO);
+  }
+
+  @Override
+  public int getNextBookCode() {
+    return bookMapper.getNextBookCode();
+  }
+
 
 }

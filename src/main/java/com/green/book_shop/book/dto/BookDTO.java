@@ -6,6 +6,7 @@ import lombok.ToString;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,4 +20,5 @@ public class BookDTO {
   private LocalDateTime regDate;
   private int bookStock;
   private int cateCode;
+  private List<ImgDTO> imgList;
 }
