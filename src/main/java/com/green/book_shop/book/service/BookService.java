@@ -22,4 +22,9 @@ public interface BookService {
   //다음에 들어갈 BOOK_CODE
   public int getNextBookCode();
 
+
+
+
+  public BookCategoryDTO getCategoryByCateCode(int cateCode);
+
 }
