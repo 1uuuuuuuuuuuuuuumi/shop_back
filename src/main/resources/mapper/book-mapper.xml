@@ -17,6 +17,28 @@
         <result column="CATE_NAME" property="cateName"/>
     </resultMap>
 
+    <!--BOOK 테이블-->
+    <resultMap id="book" type="BookDTO">
+        <id     column="BOOK_CODE" property="bookCode" />
+        <result column="BOOK_NAME" property="bookName" />
+        <result column="BOOK_PRICE" property="bookPrice" />
+        <result column="PUBLISHER" property="publisher" />
+        <result column="BOOK_INFO" property="bookInfo" />
+        <result column="REG_DATE" property="regDate" />
+        <result column="BOOK_STOCK" property="bookStock" />
+        <result column="CATE_CODE" property="cateCode" />
+        <collection property="imgList" resultMap="bookImg" />
+    </resultMap>
+
+    <!--BOOK_IMG 테이블-->
+    <resultMap id="bookImg" type="ImgDTO">
+        <id     column="IMG_CODE" property="imgCode" />
+        <result column="ORIGIN_FILE_NAME" property="originFileName" />
+        <result column="ATTACHED_FILE_NAME" property="attachedFileName" />
+        <result column="IS_MAIN" property="isMain" />
+        <result column="BOOK_CODE" property="bookCode" />
+    </resultMap>
+
     <!--도서 카테고리 목록 조회-->
     <select id="selectCategoryList" resultMap="bookCategory">
         SELECT CATE_CODE
@@ -93,6 +115,19 @@
     <select id="getNextBookCode" resultType="int">
         SELECT IFNULL (MAX(BOOK_CODE), 0) + 1
         FROM book
+    </select>
+
+    <!--도서 상품 목록 조회-->
+    <!--도서번호, 도서명, 도서 가격, 첨부된 상품명-->
+    <select id="selectItemList" resultMap="book">
+        SELECT B.BOOK_CODE
+            , BOOK_NAME
+            , BOOK_PRICE
+            , ATTACHED_FILE_NAME
+        FROM book B INNER JOIN book_img I
+        ON B.BOOK_CODE = I.BOOK_CODE
+        WHERE IS_MAIN = 'Y'
+        ORDER BY REG_DATE DESC
     </select>
 
 </mapper>

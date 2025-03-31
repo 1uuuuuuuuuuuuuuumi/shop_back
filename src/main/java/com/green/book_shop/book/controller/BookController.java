@@ -5,6 +5,8 @@ import com.green.book_shop.book.dto.ImgDTO;
 import com.green.book_shop.book.service.BookService;
 import com.green.book_shop.util.UploadUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -55,5 +57,15 @@ public class BookController {
     //BOOK_IMG 테이블에 도서 이미지 정보 INSERT
     bookService.insertImgs(bookDTO); //bookDTO
 
+    }
+
+  //상품(도서) 목록 조회
+  @GetMapping("")
+  public ResponseEntity<?> getBookList(){
+    //도서 목록 조회 쿼리 실행
+    List<BookDTO> bookList = bookService.selectItemList();
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(bookList);
   }
 }

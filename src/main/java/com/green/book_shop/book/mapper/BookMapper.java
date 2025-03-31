@@ -29,8 +29,13 @@ public interface BookMapper {
   //다음에 들어갈 BOOK_CODE 조회
   public int getNextBookCode();
 
+  //상품 목록 조회
+  public List<BookDTO> selectItemList();
 
 
+
+
+  //연습용
   public BookCategoryDTO getCategoryByCateCode(int cateCode);
 
 }
